@@ -1,0 +1,25 @@
+<!DOCTYPE Menu
+
+   PUBLIC '-//freedesktop//DTD Menu 1.0//EN'
+
+   'http://standards.freedesktop.org/menu-spec/menu-1.0.dtd'>
+
+<Menu>
+
+	<Name>Applications</Name>
+
+	<Menu>
+
+		<Name>maskproject</Name>
+
+       		<Directory>mask.directory</Directory>
+
+       		<Include>
+
+           		<Category>maskproject</Category>
+
+       		</Include>
+
+    	</Menu>
+
+</Menu>

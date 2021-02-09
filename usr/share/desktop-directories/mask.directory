@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=mask project
+Name[ko_KR]=마스크 소독기
+Comment=mask project for rpi
+Comment[ko_KR]=라즈베리 파이용 마스크 소독기
+Icon=/usr/share/icons/mask.png
+Type=Directory

@@ -1,0 +1,7 @@
+Package: mask-project
+Version: 1.0.0
+Maintainer: Jeong seojin <seojin04230423@gmail.com>
+Description: mask project for all!
+Homepage: https://github.com/jeongseoanjeong
+Architecture: all
+Depends: python3 (>=3.5),gnome-terminal

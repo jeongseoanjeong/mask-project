@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "checking this computer has gnome-terminal"
+gnome-terminal
+if [ $? -ne 0 ];
+then
+	echo "please install gnome-terminal"
+fi
+python3 -c "import vlc"
+case $? in
+	0)
+		echo "vlc is already installed."
+		;;
+	1)
+		sudo pip3 install python-vlc
+		;;
+esac
+echo "more languages will be translated soon!"
+echo "supported language:korean,english"

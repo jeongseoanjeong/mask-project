@@ -1,0 +1,352 @@
+#!/bin/bash 
+exe(){
+	if [ "$lang" = "ko" ];
+	then
+		whiptail --backtitle "$btitle" --title "시간 입력 모드 설정" --yesno "어떤 시간을 기준으로 입력하시겠습니까?" --yes-button "작동 시간" --no-button "종료 시간" 20 50
+		mode=$?
+		if [ $mode -eq 0 ];
+		then
+			hhhh="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:시" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+			mmmm="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:분" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+			ssss="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:초" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+			issyntaxcorrect
+		elif [ $mode -eq 1 ];
+		then
+			hhhh="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:시" --inputbox "작동 종료 시간을 입력해 주십시오.(0~23)" 20 50 3>&1 1>&2 2>&3)"
+			mmmm="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:분" --inputbox "작동 종료 시간을 입력해 주십시오.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+			ssss="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:초" --inputbox "작동 종료 시간을 입력해 주십시오.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+			issyntaxcorrect
+		fi
+	else
+		whiptail --backtitle "$enbtitle" --title "select mode" --yesno "select time mode(" --yes-button "operating time" --no-button "end of operating time" 20 50
+		mode=$?
+		if [ $mode -eq 0 ];
+		then
+			hhhh="$(whiptail --backtitle "$enbtitle" --title "set operating time:hour" --inputbox "please enter the operating time." 20 50 3>&1 1>&2 2>&3)"
+			mmmm="$(whiptail --backtitle "$enbtitle" --title "set operating time:minute" --inputbox "please enter the operating time." 20 50 3>&1 1>&2 2>&3)"
+			ssss="$(whiptail --backtitle "$enbtitle" --title "set operating time:second" --inputbox "please enter the operating time." 20 50 3>&1 1>&2 2>&3)"
+			issyntaxcorrect
+		elif [ $mode -eq 1 ];
+		then
+			hhhh="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:hour" --inputbox "please enter the end of operation time.(0~23)" 20 50 3>&1 1>&2 2>&3)"
+			mmmm="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:minute" --inputbox "please enter the end of operation time.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+			ssss="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:second" --inputbox "please enter the end of operation time.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+			issyntaxcorrect
+		fi
+	fi
+}
+
+issyntaxcorrect(){
+	while [ $hc -eq 0 ] && [ $mc -eq 0 ] && [ $sc -eq 0 ];
+	do
+		if [ $hh -le 23 ] && [ $hh -ge 0 ] && [ $mode -eq 1 ];
+		then
+			hc=1
+		elif [ $hh -ge 0 ] &&  [ $mode -eq 0 ];
+		then
+			hc=1
+		elif [ $mode -eq 1 ];
+		then
+			if [ "$lang" = "ko" ];
+			then
+				hhhh="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:시" --inputbox "작동 종료 시간을 입력해 주십시오.(0~23)" 20 50 3>&1 1>&2 2>&3)"
+			else
+				hhhh="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:hour" --inputbox "please enter the end of operation time.(0~23)" 20 50 3>&1 1>&2 2>&3)"
+			fi
+		else
+			if [ "$lang" = "ko" ];
+			then
+				hhhh="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:시" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+			else
+				hhhh="$(whiptail --backtitle "$enbtitle" --title "set operating time:hour" --inputbox "please enter operating time." 20 50 3>&1 1>&2 2>&3)"
+			fi
+		fi
+	if [ $mm -le 59 ] && [ $mm -ge 0 ] && [ $mode -eq 1 ];
+	then
+		mc=1
+	elif [ $mm -ge 0 ] &&  [ $mode -eq 0 ];
+	then
+		mc=1
+	elif [ $mode -eq 1 ];
+	then
+		if [ "$lang" = "ko" ];
+		then
+			mmmm="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:분" --inputbox "작동 종료 시간을 입력해 주십시오.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+		else
+			mmmm="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:minute" --inputbox "please enter the end of operation time.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+		fi
+	else
+		if [ "$lang" = "ko" ];
+		then
+			mmmm="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:분" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+		else
+			mmmm="$(whiptail --backtitle "$enbtitle" --title "set operating time:minute" --inputbox "please enter operating time." 20 50 3>&1 1>&2 2>&3)"
+		fi
+	fi
+	if [ $ss -le 59 ] && [ $ss -ge 0 ] && [ $mode -eq 1 ];
+	then
+		sc=1
+	elif [ $hh -ge 0 ] &&  [ $mode -eq 0 ];
+	then
+		sc=1
+	elif [ $mode -eq 1 ];
+	then
+		if [ "$lang" = "ko" ];
+		then
+			ssss="$(whiptail --backtitle "$btitle" --title "작동 종료 시간 설정:초" --inputbox "작동 종료 시간을 입력해 주십시오.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+		else
+			ssss="$(whiptail --backtitle "$enbtitle" --title "set end of operation time:second" --inputbox "please enter the end of operation time.(0~59)" 20 50 3>&1 1>&2 2>&3)"
+		fi
+	else
+		if [ "$lang" = "ko" ];
+		then
+			ssss="$(whiptail --backtitle "$btitle" --title "작동 시간 설정:초" --inputbox "작동 시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)"
+		else
+			ssss="$(whiptail --backtitle "$enbtitle" --title "set operating time:second" --inputbox "please enter operating time." 20 50 3>&1 1>&2 2>&3)"
+		fi
+	fi
+	if [ $hc -eq 1 ] && [ $mc -eq 1 ] && [ $sc -eq 1 ];
+	then
+		checklast
+	fi
+done
+}
+checklast(){
+	hh="$((hhhh + 0))"
+	mm="$((mmmm + 0))"
+	ss="$((ssss + 0))"
+	if [ $hhhh -le 9 ] && [ $hhhh -ge 0 ];
+	then
+		hhhh="0$hhhh"
+		fi
+	if [ $mmmm -le 9 ] && [ $mmmm -ge 0 ];
+	then
+		mmmm="0$mmmm"
+	fi
+	if [ $ssss -le 9 ] && [ $ssss -ge 0 ];
+	then
+		ssss="0$ssss"
+	fi
+
+	if [ $lang = "ko" ];
+	then
+		case $mode in
+			0)
+				mode2="작동 시간 기준"
+				;;
+			1)
+				mode2="종료 시간 기준"
+				;;
+		esac
+		checked=$(whiptail --backtitle "$btitle" --title "마지막 확인" --radiolist "오류가 없는지 다시 한 번 확인해 주십시오." 20 50 5 \
+			"모드" "$mode2" ON \
+			"시" "$hh" OFF \
+			"분" "$mm" OFF \
+			"초" "$ss" OFF \
+			"오류 없음" "오류가 없을 때만 선택하십시오!"  OFF \
+			3>&1 1>&2 2>&3)
+	else
+		case $mode in
+			0)
+				mode2="operating time"
+				;;
+			1)
+				mode2="end of operation time"
+				;;
+		esac
+		checked=$(whiptail --backtitle "$enbtitle" --title "last check" --radiolist "double check this summary." 20 50 5 \
+			"mode" "$mode2" ON \
+			"hour" "$hh" OFF \
+			"minute" "$mm" OFF \
+			"second" "$ss" OFF \
+			"no error" "please check if there are no error!" OFF \
+			3>&1 1>&2 2>&3)
+	fi	
+		case "$checked" in
+			"모드" | "mode" )
+				if [ "$lang" = "ko" ];
+				then
+					whiptail --backtitle "$btitle" --title "시간 입력 모드 설정" --yesno "어떤 시간을 기준으로 입력하시겠습니까?" --yes-button "작동 시간" --no-button "종료 시간" 20 50
+				else
+					whiptail --backtitle "$enbtitle" --title "select mode" --yesno "select time mode(" --yes-button "operating time" --no-button "end of operating time" 20 50
+				fi
+				mode=$?
+				checklast
+				;;
+			"시" | "hour" )
+				if [ "$lang" = "ko" ];
+				then
+					hh=$(whiptail --backtitle "$btitle" --title "시간 고치기:분" --inputbox "시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)
+				else
+					hh=$(whiptail --backtitle "$enbtitle" --title "fix time:minute" --inputbox "please enter the time.(0~59 if mode is " 20 50 3>&1 1>&2 2>&3)
+				fi
+				checklast
+				;;
+			"분" | "minute" )
+				if [ "$lang" = "ko" ];
+				then
+					mm=$(whiptail --backtitle "$btitle" --title "시간 고치기:분" --inputbox "시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)
+				else
+					mm=$(whiptail --backtitle "$enbtitle" --title "set operating time:minute" --inputbox "please enter the time." 20 50 3>&1 1>&2 2>&3)
+				fi
+				checklast
+				;;
+			"초" | "second")
+				if [ "$lang" = "ko" ];
+				then
+					ss=$(whiptail --backtitle "$btitle" --title "시간 고치기:초" --inputbox "시간을 입력해 주십시오." 20 50 3>&1 1>&2 2>&3)
+				else
+					ss=$(whiptail --backtitle "$enbtitle" --title "set operating time:second" --inputbox "please enter the time." 20 50 3>&1 1>&2 2>&3)
+				fi
+				checklast
+				;;
+			"오류 없음" | "no error")
+				timeel4=$((${hh#0} * 3600 + ${mm#0} * 60 + ${ss#0}))
+				python3 masklighton.py
+				exe2
+				;;
+		esac
+}
+exe2(){
+	while true;
+	do
+		getpercent
+		case "$lang" in
+			"ko")
+				case $mode in
+					0)
+						printf "소독 종료까지 남은 시간:%s,진행률[%s] %f %%\r" "$converted" "$bar" "$percent"
+						;;
+					1)
+						printf "소독 시작 시간:%s,종료 시간:%s,남은 시간:%s,진행률[%s] %f %%\r" "$time1" "$time2" "$etime" "$bar" "$percent"
+						;;
+				esac
+				;;
+			*)
+				case $mode in
+					0)
+						printf "time remaining:%s,percent[%s] %f %%\r" "$converted" "$bar" "$percent"
+						;;
+					1)
+						printf "start:%s,end:%s,time remaining:%s,percent[%s] %f %%\r" "$time1" "$time2" "$etime" "$bar" "$percent"
+						;;
+				esac
+				;;
+		esac
+		sleep 1
+		timeel4=$((${timeel4#0}-1))
+		if [ $timeel3 -le 0 ];
+		then
+			case $lang in
+				"ko")
+					whiptail --backtitle "$btitle" --infobox "소독이 종료되었습니다. 이용해 주셔서 감사합니다."
+					;;
+				*)
+					whiptail --backtitle "$btitle" --infobox "The sterilization has ended.thank you for using."
+					;;
+			esac
+			python3 ./masklightoff.py
+		fi
+	done
+}
+getpercent(){
+	ho=$(date +%H)
+	mi=$(date +%M)
+	se=$(date +%S)
+	time2="$hh:$mm:$ss"
+	timeel=$(((${hh#0} - ${hhh#0}) * 3600 + (${mm#0} - ${mmm#0}) * 60 + ${ss#0} - ${sss#0}))
+	timeel2=$(((${ho#0} - ${hhh#0}) * 3600 + (${mi#0}-${mmm#0}) * 60 +${se#0} - ${sss#0}))
+	timeel3=$(((${hh#0} - ${ho#0}) * 3600 + (${mm#0}-${mi#0}) * 60 + ${ss#0} - ${se#0}))
+	timeel4=$((${hh#0} * 3600 + ${mm#0} * 60 + ${ss#0}))
+	timeel5=$((${timeel3#0} - 32400))
+	etime="$(date --date="@$timeel5" +%H:%M:%S)"
+	percent2=$(echo "scale=2;${timeel2#0}/${timeel#0}" | bc -l )
+	percent=$(echo "scale=2;${percent2#0}*100" | bc -l )
+	converted="$(date --date="@$timeel4" +%H:%M:%S)"
+	setbar
+}
+
+setbar(){
+	if [ $( echo "$percent>=0 && $percent<10" | bc ) -eq 1 ];
+	then
+		bar="          "
+	elif [ $( echo "$percent>=10 && $percent<20" | bc ) -eq 1 ];
+	then
+		bar=">         "
+	elif [ $( echo "$percent>=20 && $percent<30" | bc ) -eq 1 ];
+	then
+		bar="=>        "
+	elif [ $( echo "$percent>=30 && $percent<40" | bc ) -eq 1 ];
+	then
+		bar="==>       "
+	elif [ $( echo "$percent>=40 && $percent<50" | bc ) -eq 1 ];
+	then
+		bar="===>      "
+	elif [ $( echo "$percent>=50 && $percent<60" | bc ) -eq 1 ];
+	then
+		bar="====>     "
+	elif [ $( echo "$percent>=60 && $percent<70" | bc ) -eq 1 ];
+	then
+		bar="=====>    "
+	elif [ $( echo "$percent>=70 && $percent<80" | bc ) -eq 1 ];
+	then
+		bar="======>   "
+	elif [ $( echo "$percent>=80 && $percent<90" | bc ) -eq 1 ];
+	then
+		bar="=======>  "
+	elif [ $( echo "$percent>=90 && $percent<100" | bc ) -eq 1 ];
+	then
+		bar="=========>"
+	else
+		bar="=========="
+	fi
+}
+timeel2=0
+timeel3=0
+timeel4=0
+timeel5=0
+timeel=0
+hhhh=0
+mmmm=0
+ssss=0
+time1="$(date +%H:%M:%S)"
+hhh=$(date +%H)
+mmm=$(date +%M)
+sss=$(date +%S)
+time2=""
+bar=""
+mode2=""
+hc=0
+mc=0
+sc=0
+hh=0
+mm=0
+ss=0
+converted=""
+percent=0
+percent2=0
+mode=0
+enbtitle="mask sterilizer"
+btitle="마스크 소독기"
+lang=${LANG:0:2}
+whiptail --backtitle "$enbtitle" --title "language select" --yesno "is this the language you use? (current language:$lang,languages except korean and english will be set to english.)" 20 50
+case $? in
+	0)
+		exe
+		;;
+	1)
+		lang=$( whiptail --backtitle "$enbtitle" --title "language select" --radiolist "please select language, other languages is set to english and will translated soon." 20 50 2 \
+			"en" "english" ON \
+			"ko" "한국어" OFF \
+			3>&1 1>&2 2>&3 )
+			case $? in
+			0)
+				exe
+				;;
+			255)
+				echo "break."
+				exit
+				;;
+		esac
+		;;
+esac

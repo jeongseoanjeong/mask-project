@@ -1,0 +1,24 @@
+#!/bin/bash
+for(( i=0; i<20; i++ ));
+do
+	j=$(echo "$i % 4"| bc)
+	case $j in
+		0)
+			loadingbar="\\"
+			;;
+		1)
+			loadingbar="-"
+			;;
+		2)
+			loadingbar="/"
+			;;
+		3)
+			loadingbar="|"
+			;;
+	esac
+	sleep 0.125
+	printf "launching mask-project.please wait...%s\r" "$loadingbar"
+done
+echo -e "you need uv led that can kill virus and connect it to gpio 17(BCM mode) or pin 11(BOARD mode). when finished, press key."
+read -s -n 1 
+gnome-terminal --window --maximize -- "masklightuv"

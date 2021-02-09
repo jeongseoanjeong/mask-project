@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0.0
+Name=mask project for RPi GPIO
+Name[ko_KR]=라즈베리파이용 마스크 소독기
+Exec=masklauncher 
+Terminal=true
+Type=Application
+StartupNotify=false
+Categories=maskproject;
+Icon=/usr/share/icons/mask.png
